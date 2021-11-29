@@ -3,7 +3,7 @@ services:
   database:
     image: postgres:latest
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
@@ -190,7 +190,7 @@ services:
     image: jboss/keycloak
     restart: always
     environment:
-#      KEYCLOAK_VERSION: 6.0.1
+      KEYCLOAK_VERSION: 6.0.1
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
 #    volumes:
@@ -206,6 +206,22 @@ services:
       backend:
         aliases:
           - "keycloak"
+
+  zipkin: 
+    image: openzipkin/zipkin 
+    container_name: zipkin
+    depends_on: 
+      - elasticsearch
+    environment: 
+      - STORAGE_TYPE=elasticsearch
+      - "ES_HOSTS=elasticsearch:9300"
+    ports:
+      - "9411:9411"
+    networks:
+      backend:
+        aliases:
+          - "zipkin"
+
 volumes:
   esdata1:
     driver: local

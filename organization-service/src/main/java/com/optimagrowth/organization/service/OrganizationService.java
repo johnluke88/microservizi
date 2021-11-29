@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import brave.ScopedSpan;
+import brave.Tracer;
+
 import com.optimagrowth.organization.events.source.SimpleSourceBean;
 import com.optimagrowth.organization.model.Organization;
 import com.optimagrowth.organization.repository.OrganizationRepository;
@@ -22,12 +25,29 @@ public class OrganizationService {
     
     @Autowired
     SimpleSourceBean simpleSourceBean;
+    
+    @Autowired
+	Tracer tracer;
 
     public Organization findById(String organizationId) {
-    	Optional<Organization> opt = repository.findById(organizationId);
+    	Optional<Organization> opt = null;
+    	ScopedSpan newSpan = tracer.startScopedSpan("getOrgDBCall");
+    	try {
+    	opt = repository.findById(organizationId);
     	simpleSourceBean.publishOrganizationChange("GET", organizationId);
-        return (opt.isPresent()) ? opt.get() : null;
-    }	
+    	if (!opt.isPresent()) {
+    		String message = String.format("Unable to find an organization with the Organization id %s", organizationId);
+			logger.error(message);
+			throw new IllegalArgumentException(message);	
+		}
+    	logger.debug("Retrieving Organization Info: " + opt.get().toString());
+    	}finally {
+    		newSpan.tag("peer.service", "postgres");
+			newSpan.annotate("Client received");
+			newSpan.finish();
+    	}
+    	return opt.get();
+    }		
 
     public Organization create(Organization organization){
     	organization.setId( UUID.randomUUID().toString());
