@@ -1,4 +1,4 @@
-# Microservizi (esempio)
+# Microservizi
 Progetto di riferimento basato sui concetti e le best practice di "Microservices in Action (2nd Edition)" di Manning. Questo repository contiene esempi/implementazioni di microservizi in Java con containerizzazione Docker.
 
 > Nota: questo progetto si ispira al libro "Microservices in Action" per l'architettura e le pratiche; implementazioni, nomi e configurazioni qui sono adattabili al codice presente nel repository.
@@ -42,16 +42,14 @@ L'architettura e le decisioni di design si rifanno ai pattern e agli esempi desc
 - Message Broker — es. Kafka o RabbitMQ per comunicazioni asincrone
 - Database per ogni servizio (pattern Database per servizio)
 
-(Inserire diagramma architetturale qui — ad esempio un file `docs/architecture.png`)
-
 ## Tecnologie principali
 - Java 17 (o versione specifica del progetto)
-- Spring Boot / Spring Cloud (opzionale, a seconda del codice)
-- Maven o Gradle (indicare quale si usa)
+- Spring Boot / Spring Cloud 
+- Maven
 - Docker / Docker Compose
-- Message broker: Kafka / RabbitMQ (se usato)
+- Message broker: Kafka
 - Zipkin / OpenTelemetry per tracing
-- Prometheus + Grafana per metrics (opzionale)
+- Prometheus + Grafana per metrics
 
 ## Requisiti
 - JDK 17+
@@ -125,38 +123,14 @@ Consigli: usare un Config Server o vault per segreti in produzione.
 - Integration tests: testcontainers per DB e broker in locale
 - Contract tests (opzionale): Pact / Spring Cloud Contract
 
-Comando test esempio:
-  mvn test
-
-## CI / CD (suggerimento)
-- GitHub Actions / GitLab CI per:
-  - Build e test
-  - Static analysis (Checkstyle, SpotBugs)
-  - Build e push di immagini Docker su registry (Docker Hub / GitHub Packages)
-  - Deploy su ambiente di staging / produzione (Kubernetes / Docker Swarm)
-
-## Struttura del repository (esempio)
+## Struttura del repositor
 - service-a/ — codice sorgente Service A
 - service-b/ — codice sorgente Service B
-- config-server/ — server di configurazione (opzionale)
+- config-server/ — server di configurazione 
 - docker-compose.yml
 - docs/ — diagrammi e documentazione aggiuntiva
-
-Aggiorna questa sezione con la struttura reale del repository.
-
-## Contributi
-I contributi sono benvenuti. Linee guida rapide:
-1. Fork del progetto
-2. Crea feature branch: git checkout -b feat/nome-feature
-3. Aggiungi test e documentazione
-4. Apri una pull request descrivendo i cambiamenti
-
-Aggiungi un file CONTRIBUTING.md con dettagli più precisi.
 
 ## Riferimenti e letture consigliate
 - "Microservices in Action", Second Edition — Manning
 - Documentazione Spring Boot / Spring Cloud
 - Documentazione OpenTelemetry, Prometheus, Kafka / RabbitMQ
-
-## Licenza
-Indicare la licenza del repository (es. MIT, Apache-2.0). Aggiungere file LICENSE nella root.
